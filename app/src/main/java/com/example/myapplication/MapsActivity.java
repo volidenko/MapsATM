@@ -1,7 +1,14 @@
 package com.example.myapplication;
 
 import androidx.fragment.app.FragmentActivity;
+
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,8 +21,39 @@ import com.example.myapplication.databinding.ActivityMapsBinding;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-private ActivityMapsBinding binding;
+    private ActivityMapsBinding binding;
 
+    private static class CustomArrayAdapter extends ArrayAdapter<DemoDetails> {
+
+        /**
+         * @param demos An array containing the details of the demos to be displayed.
+         */
+        public CustomArrayAdapter(Context context, DemoDetails[] demos) {
+            super(context, R.layout.feature, R.id.title, demos);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            FeatureView featureView;
+            if (convertView instanceof FeatureView) {
+                featureView = (FeatureView) convertView;
+            } else {
+                featureView = new FeatureView(getContext());
+            }
+
+            DemoDetails demo = getItem(position);
+
+            featureView.setTitleId(demo.titleId);
+            featureView.setDescriptionId(demo.descriptionId);
+
+            Resources resources = getContext().getResources();
+            String title = resources.getString(demo.titleId);
+            String description = resources.getString(demo.descriptionId);
+            featureView.setContentDescription(title + ". " + description);
+
+            return featureView;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,9 +61,10 @@ private ActivityMapsBinding binding;
      binding = ActivityMapsBinding.inflate(getLayoutInflater());
      setContentView(binding.getRoot());
 
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 

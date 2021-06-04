@@ -80,10 +80,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney").snippet("Uno"));
+        //https://api.privatbank.ua/p24api/infrastructure?atm&address=&city=Александрия
+        // Add a marker in ATM and move the camera
+        LatLng sydney = new LatLng(33.120129, 48.657359);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in ATM").snippet("Ukraine,region Kirovohradska,district Oleksandriiskyi,city Oleksandriia,avenue Lenina,building 107"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
